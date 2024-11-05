@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+header, main {
+    padding-inline:20px;
+    padding-top: 10px;
+    color: black;
+    flex: 1;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    
+}
+
+ header{
+    margin-right: auto;
+ }
+td, th {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+    
+  }
+
+
+.main-menu ul {
+    display: flex;
+    margin-right: auto;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+
+.main-menu li {
+    display: inline;
+    margin-right: 10px;
+    font-size: 24px;
+    padding-right: 16px;
+}
+
+h1, 
+h2 {
+    font-weight: bold
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse; 
+    margin-top: 20px; 
+}
+
+
+  nav li {
+    display: inline;
+    font-size: 18px;
+    padding-right: 16px;
+  }
+ 
+
+footer {
+    margin-top: 20px;
+    background-color: black;
+    color: white;
+    padding: 20px ;
+}
+
+a {
+    color: black; /* Цвет обычной ссылки */
+    text-decoration: none; /* Убираем подчёркивание у ссылок */
+  }
+  
+  a:hover {
+    color: #CE242B; /* Цвет ссылки при наведении */
+   
+  }

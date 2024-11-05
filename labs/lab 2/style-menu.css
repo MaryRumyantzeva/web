@@ -1,0 +1,273 @@
+header {
+    padding-inline:20px;
+    padding-top: 10px;
+    color: black;
+    flex: 1;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    margin-right: auto;
+    font-size: 16px;
+    
+}
+
+body{
+    font-family: "Roboto", sans-serif;
+}
+
+footer {
+    margin-top: 20px;
+    background-color: black;
+    color: white;
+    padding: 20px ;
+}
+
+.main-menu li {
+    display: inline;
+    margin-right: 10px;
+    font-size: 24px;
+    padding-right: 16px;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+    width: 100%; /* Обеспечивает распределение на всю ширину */
+}
+
+nav li {
+    display: inline;
+    font-size: 18px;
+    padding-right: 16px;
+    
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+nav a:hover,
+nav .active {
+    color: red;
+}
+
+.dishes {
+    padding: 20px;
+}
+
+.category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.dish {
+    border: 2px solid white;
+    background-color: white;
+    border-radius: 35px;
+    padding: 30px 40px;
+    filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+    cursor: pointer;
+    transition: border 0.3s;
+}
+
+.dish:hover {
+    border: 2px solid red;
+}
+
+.dish img {
+    width: 100%;
+    border-radius: 35px;
+}
+
+.dish-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.add-button {
+    width: 100%;
+    background-color: #f1eee9;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.title-order {
+    text-align: center;
+    color: #333;
+    margin-bottom: 32px;
+}
+
+.form-order {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.form-container {
+    display: flex; /* Используем flexbox для колонок */
+    gap: 20px; /* Пробел между колонками */
+}
+
+fieldset {
+    border: none;
+    padding: 15px;
+}
+form {
+    width: 45%;
+}
+legend {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="time"],
+select,
+textarea {
+    width: 100%; /* Полная ширина для полей ввода */
+    padding: 10px; /* Внутренний отступ */
+    margin-bottom: 15px; /* Пробел ниже полей ввода */
+    border: 1px solid #ccc; /* Светлый серый край */
+    border-radius: 4px; /* Закругленные углы */
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 10px; /* Пробел справа от чекбокса/радио */
+}
+
+.order {
+    margin-top: 60px;
+}
+
+.bt-form { width: 40%;
+ background-color: #f1eee9; 
+ padding: 10px 30px; 
+ border: none; 
+ border-radius: 
+ 10px; cursor: pointer;
+  font-size: 16px; 
+  margin: 10px; 
+}
+
+#bt-form-send:hover {
+    background-color: #128c07;
+    color: white;
+}
+#bt-form-reset:hover {
+    background-color: red;
+    color: white;
+}
+
+h1 {
+    color: #333;
+    c
+}
+
+.dish:hover .add-button {
+    background-color: #f10f40;
+    color: white;
+}
+
+.dish-title {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.dish-price {
+    font-size: 18px;
+}
+
+.dish-weight {
+    color: #333;
+}
+
+@media (max-width: 800px) {
+    .category {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .toppannel b {
+        width: 0px;
+        visibility: hidden;
+    }
+    
+    nav {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    nav a {
+        font-size: calc(1rem + 2px);
+    }
+    nav ul {
+        justify-content: space-between; /* Обеспечивает равномерное распределение */
+    }
+}
+
+@media (max-width: 600px) {
+    .toppannel b {
+        width: 0px;
+        visibility: hidden;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+
+    nav ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        align-items: center;
+    }
+
+    nav li {
+        margin: 10px 0;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #333;
+        font-size: calc(1rem + 2px);
+        
+    }
+
+    nav a:hover,
+    nav .active {
+        color: red;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .category {
+        grid-template-columns: 1fr;
+    }
+}
