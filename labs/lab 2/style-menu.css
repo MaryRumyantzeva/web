@@ -135,46 +135,7 @@ label {
     margin: 10px 0 5px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="time"],
-select,
-textarea {
-    width: 100%; /* Полная ширина для полей ввода */
-    padding: 10px; /* Внутренний отступ */
-    margin-bottom: 15px; /* Пробел ниже полей ввода */
-    border: 1px solid #ccc; /* Светлый серый край */
-    border-radius: 4px; /* Закругленные углы */
-}
 
-input[type="checkbox"],
-input[type="radio"] {
-    margin-right: 10px; /* Пробел справа от чекбокса/радио */
-}
-
-.order {
-    margin-top: 60px;
-}
-
-.bt-form { width: 40%;
- background-color: #f1eee9; 
- padding: 10px 30px; 
- border: none; 
- border-radius: 
- 10px; cursor: pointer;
-  font-size: 16px; 
-  margin: 10px; 
-}
-
-#bt-form-send:hover {
-    background-color: #128c07;
-    color: white;
-}
-#bt-form-reset:hover {
-    background-color: red;
-    color: white;
-}
 
 h1 {
     color: #333;
