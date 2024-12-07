@@ -1,23 +1,32 @@
-body {
-    margin: 0;
-    font-size: 16px;
-    color: #333;
-    font-family: "Roboto", sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    
+header {
+  padding-inline:20px;
+  padding-top: 10px;
+  color: black;
+  flex: 1;
+  font-weight: 400;
+  font-style: normal;
+  max-width: 1200px;
+  margin-right: auto;
+  font-size: 16px;
+  
 }
 
-header, main {
-    padding-inline:20px;
-    padding-top: 10px;
-    color: black;
-    flex: 1;
-    font-weight: 400;
-    font-style: normal;
-    max-width: 1200px;
-    
+body{
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  margin-top: auto;
+}
+
+nav .active {
+  color: tomato;
 }
 
  header{
@@ -68,12 +77,7 @@ table {
   }
  
 
-footer {
-    margin-top: 20px;
-    background-color: black;
-    color: white;
-    padding: 20px ;
-}
+
 
 a {
     color: black; /* Цвет обычной ссылки */
@@ -84,3 +88,49 @@ a {
     color: #CE242B; /* Цвет ссылки при наведении */
    
   }
+
+@media (max-width: 800px) {
+    .main.photo {
+        width: 500px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 600px) {
+    h1 {
+        text-align: center;
+    }
+    
+    .toppannel b{
+        width: 0px;
+        visibility: hidden;
+    }
+    
+    nav {
+        flex-direction: column; 
+        align-items: center;
+    }
+    
+    nav a {
+        font-size: calc(1em + 4px);
+    }
+
+    .main.photo {
+        width: 100%;
+    }
+    
+    table {
+        font-size: calc(1em - 2px);
+    }
+}
+
+
+@media (max-width: 400px) {
+    table {
+        font-size: calc(1em - 4px); /* Уменьшение шрифта таблицы на еще 2px */
+    }
+}
