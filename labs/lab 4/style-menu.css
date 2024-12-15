@@ -1,0 +1,301 @@
+header {
+    padding-inline:20px;
+    padding-top: 10px;
+    color: black;
+    flex: 1;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    margin-right: auto;
+    font-size: 16px;
+    
+}
+
+body{
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.main-menu li {
+    display: inline;
+    margin-right: 10px;
+    font-size: 24px;
+    padding-right: 16px;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+    width: 100%; /* Обеспечивает распределение на всю ширину */
+}
+
+nav li {
+    display: inline;
+    font-size: 18px;
+    padding-right: 16px;
+    
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+}
+
+nav a:hover,
+nav .active {
+    color: red;
+}
+
+.dishes {
+    padding: 20px;
+}
+
+.category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.dish {
+    background-color: white;
+    border-radius: 35px;    
+    padding: 30px 40px;
+    filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+    cursor: pointer;
+     
+}
+
+.dish:hover {
+    border: 2px solid tomato;
+}
+
+.dish img {
+    width: 100%;
+    border-radius: 35px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.dish-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.add-button {
+    display: block;
+    width: 100%;
+    background-color: #f1eee9;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+
+h1 {
+    color: black;
+}
+
+.add-button:hover  {
+    background-color: tomato;
+    color: white;
+}
+
+.dish-title {
+    font-size: 18px;
+    margin: 10px 0;
+    height: 40px;
+}
+
+.dish-price {
+    font-size: 18px;
+}
+
+.dish-weight {
+    color: black;
+}
+
+@media (max-width: 800px) {
+    .category {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .toppannel b {
+        width: 0px;
+        visibility: hidden;
+    }
+    
+    nav {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .dish-title {
+        height: 40px;
+    }
+    
+    nav a {
+        font-size: calc(1rem + 2px);
+    }
+    nav ul {
+        justify-content: space-between; /* Обеспечивает равномерное распределение */
+    }
+}
+
+@media (max-width: 600px) {
+    .toppannel b {
+        width: 0px;
+        visibility: hidden;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 100%;
+    }
+    
+    .dish-title {
+        height: 55px;
+    }
+    nav ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        align-items: center;
+    }
+
+    nav li {
+        margin: 10px 0;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: black;
+        font-size: calc(1rem + 2px);
+        
+    }
+
+    nav a:hover{
+        color: red;
+    }
+
+    nav .active {
+        color: tomato;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .category {
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
+}
+
+
+
+form{
+    width: 100%;
+}
+
+fieldset {
+    border: none;
+    width: 32%;
+}
+
+legend {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.podpiska{
+    font-size: 14px;
+    margin-top: 1px;
+    font-style: italic;
+}
+.title-order {
+    text-align: center;
+    color: black;
+    margin-bottom: 32px;
+}
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 60px;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="time"],
+select,
+textarea {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 1px solid black; 
+    border-radius: 4px; 
+}
+textarea {
+    max-width: 96%;
+    max-height: 100%;
+}
+
+input[type="checkbox"],
+input[type="radio"] 
+
+.order {
+    margin-top: 6px;
+}
+
+.form-button { width: 40%;
+ background-color: white; 
+ padding: 10px 30px; 
+ border-width: thin; 
+ border-color: black;
+ border-radius: 2px;
+ cursor: pointer;
+ font-size: 16px; 
+ margin: 10px; 
+}
+
+#form-button:hover {
+    background-color: tomato;
+    color: white;
+}
