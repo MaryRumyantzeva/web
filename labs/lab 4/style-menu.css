@@ -299,3 +299,11 @@ input[type="radio"]
     background-color: tomato;
     color: white;
 }
+
+.empty-category {
+    /* sadfasd */
+}
+
+.hidden {
+    display: none;
+}

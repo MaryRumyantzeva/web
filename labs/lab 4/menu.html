@@ -31,31 +31,13 @@
             <div class="form">
                 <form method="POST" id="orderForm" action="https://httpbin.org/post">
                     <div class="form-container">
-                        <fieldset class="fieldset_left">
+                        <fieldset id="dishes" class="fieldset_left">
                             <legend>Ваш заказ</legend>
-                            <label for="soup">Суп</label>
-                            <select id="soup" name="soup" required>
-                                <option value="">--Выберите суп--</option>
-                                <option value="gaspacho">Гаспачо</option>
-                                <option value="mushroom soup-pure">Грибной суп-пюре</option>
-                                <option value="norwegian soup">Норвежский суп</option>
-                            </select>
-                            <label for="main-dish">Главное блюдо</label>
-                            <select id="main-dish" name="main-dish" required>
-                                <option value="">--Выберите главное блюдо--</option>
-                                <option value="fried potatoes with mushrooms">Жареная картошка с грибами</option>
-                                <option value="lasagna">Лазанья</option>
-                                <option value="chicken cutlets with potatoes">Котлеты из курицы с картофельным пюре
-                                </option>
-                            </select>
-                            <label for="drink">Напиток</label>
-                            <select id="drink" name="drink" required>
-                                <option value="">--Выберите напиток--</option>
-                                <option value="orange juice">Апельсиновый сок</option>
-                                <option value="apple juice">Яблочный сок</option>
-                                <option value="carrot juice">Морковный сок</option>
-                            </select>
-                            <legend>Стоимость заказа</legend>
+                            <label class="empty-order-label">Ничего не выбрано</label>
+                            <label data-category="soup" for="soup">Суп</label>
+                            <label data-category="mainDish" for="main-dish">Главное блюдо</label>
+                            <label data-category="drink" for="drink">Напиток</label>
+                            <div><p>Стоимость заказа</p><p id="totalsum">0</p></div>
                             <label for="comments">Комментарии к заказу</label>
                             <textarea id="comments" name="comments"></textarea>
                         </fieldset>
