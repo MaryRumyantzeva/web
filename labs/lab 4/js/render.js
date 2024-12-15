@@ -59,22 +59,33 @@ function totalSummary(order) {
 }
 function setupForm() {
     const addButtons = document.querySelectorAll('.add-button');
+
     const order = {
         soup: null,
         mainDish: null,
         drink: null,
     }
+
     const emptyOrderLabel = document.querySelector('.empty-order-label')
     const labels = document.querySelectorAll('#dishes label[data-category]');
     const totalSumElement = document.querySelector('#totalsum');
+
     totalSumElement.parentElement.classList.add('hidden');
     labels.forEach(label => label.classList.add('hidden'));
+
     labels.forEach(label => {
         const paragraph = document.createElement('p');
+        const input = document.createElement('input');
+
+        input.name = label.dataset.category
+        input.classList.add('hidden');
+
         paragraph.innerHTML = 'Блюдо не выбрано';
         paragraph.classList.add('empty-category')
         paragraph.classList.add('hidden')
+
         label.after(paragraph);
+        paragraph.after(input);
     })
 
     addButtons.forEach(button => {
@@ -82,19 +93,29 @@ function setupForm() {
             emptyOrderLabel.classList.add('hidden')
             totalSumElement.parentElement.classList.remove('hidden');
             labels.forEach(label => label.classList.remove('hidden'));
+
             const button = event.target;
             const dishElement = button.parentElement.parentElement;
             const dishKeyword = dishElement.dataset.dish
+
             const dish = sortedDishes.find(value => value.keyword === dishKeyword);
             order[dish.category] = dish;
+
             labels.forEach(label => {
                 const labelCategory = label.dataset.category;
+    
                 const paragraph = label.nextElementSibling;
+                const input = paragraph.nextElementSibling;
+
                 paragraph.classList.remove('hidden')
+    
                 if (labelCategory === dish.category) {
                     const paragraphText = `${dish.name} ${dish.price}₽`
                     paragraph.innerHTML = paragraphText;
+
+                    input.value = dish.keyword;
                 }
+
                 paragraph.classList.add('empty-category')
             })
 
