@@ -301,9 +301,26 @@ input[type="radio"]
 }
 
 .empty-category {
-    /* sadfasd */
+    margin-top: 5px;
+    margin-bottom: 25px;
 }
 
 .hidden {
     display: none;
 }
+
+.empty-order-label{
+    margin-bottom: 30px;
+
+}
+
+.orderPrice{
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+#totalsum {
+    font-size: 20px;
+    margin-top: 5px;
+}
+
