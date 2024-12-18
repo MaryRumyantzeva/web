@@ -106,7 +106,8 @@ function totalSummary(order) {
 }
 function setupForm() {
     const addButtons = document.querySelectorAll('.add-button');
-    const resetButton = document.querySelectorAll('.form-button');
+    const resetButton = document.querySelectorAll('.form-button[type="reset"]');
+    console.log(resetButton);
 
     const order = {
         soup: null,
@@ -224,15 +225,18 @@ function setupForm() {
                         
             const button = event.target;
             const dishElement = button.parentElement.parentElement;
-            
-            const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
-            dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
-
+                    
             document.querySelectorAll(`.dish[data-category]`)
             addButtons.forEach(b => b.classList.remove('button-active'));
-            button.classList.remove('button-active');   
-            dishElement.classList.remove('dishes-active');
 
+            addButtons.forEach(b =>{
+                const dishElement = b.parentElement.parentElement;
+                console.log(dishElement)
+                    
+                const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
+                dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
+            });     
+            
             labels.forEach(label => {
                 const paragraph = label.nextElementSibling;
                 paragraph.classList.add('hidden')
