@@ -106,6 +106,7 @@ function totalSummary(order) {
 }
 function setupForm() {
     const addButtons = document.querySelectorAll('.add-button');
+    const resetButton = document.querySelectorAll('.form-button');
 
     const order = {
         soup: null,
@@ -143,14 +144,21 @@ function setupForm() {
             totalSumElement.parentElement.classList.remove('hidden');
             labels.forEach(label => label.classList.remove('hidden'));
 
-            
-            
+                        
             const button = event.target;
             const dishElement = button.parentElement.parentElement;
             const dishKeyword = dishElement.dataset.dish
 
             const dish = sortedDishes.find(value => value.keyword === dishKeyword);
             order[dish.category] = dish;
+
+            const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
+            dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
+
+            document.querySelectorAll(`.dish[data-category]`)
+            addButtons.forEach(b => b.classList.remove('button-active'));
+            button.classList.add('button-active');   
+            dishElement.classList.add('dishes-active');
 
             labels.forEach(label => {
                 const labelCategory = label.dataset.category;
@@ -162,11 +170,7 @@ function setupForm() {
 
                 if (labelCategory === dish.category) {
                     const paragraphText = `${dish.name} ${dish.price}₽`
-                    paragraph.innerHTML = paragraphText;
-
-                    button.classList.add('button-active');   
-                    dishes.classList.add('dishes-active');
-                                   
+                    paragraph.innerHTML = paragraphText;                            
                     
 
                     input.value = dish.keyword;
@@ -208,6 +212,32 @@ function setupForm() {
                     }
                 });
             }
+        });
+    });
+
+
+    resetButton.forEach(buton => {
+        buton.addEventListener('click', (event) => {
+            emptyOrderLabel.classList.remove('hidden')
+            totalSumElement.parentElement.classList.add('hidden');
+            labels.forEach(label => label.classList.add('hidden'));
+                        
+            const button = event.target;
+            const dishElement = button.parentElement.parentElement;
+            
+            const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
+            dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
+
+            document.querySelectorAll(`.dish[data-category]`)
+            addButtons.forEach(b => b.classList.remove('button-active'));
+            button.classList.remove('button-active');   
+            dishElement.classList.remove('dishes-active');
+
+            labels.forEach(label => {
+                const paragraph = label.nextElementSibling;
+                paragraph.classList.add('hidden')
+                paragraph.classList.remove('empty-category')
+            })
         });
     });
 }
