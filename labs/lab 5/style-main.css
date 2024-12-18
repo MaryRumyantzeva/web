@@ -1,0 +1,136 @@
+header {
+  padding-inline:20px;
+  padding-top: 10px;
+  color: black;
+  flex: 1;
+  font-weight: 400;
+  font-style: normal;
+  max-width: 1200px;
+  margin-right: auto;
+  font-size: 16px;
+  
+}
+
+body{
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  margin-top: auto;
+}
+
+nav .active {
+  color: tomato;
+}
+
+ header{
+    margin-right: auto;
+ }
+td, th {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+    
+  }
+
+
+.main-menu ul {
+    display: flex;
+    margin-right: auto;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+
+.main-menu li {
+    display: inline;
+    margin-right: 10px;
+    font-size: 24px;
+    padding-right: 16px;
+}
+
+h1, 
+h2 {
+    font-weight: bold
+}
+
+table {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse; 
+    margin-top: 20px; 
+}
+
+
+  nav li {
+    display: inline;
+    font-size: 18px;
+    padding-right: 16px;
+  }
+ 
+
+
+
+a {
+    color: black; /* Цвет обычной ссылки */
+    text-decoration: none; /* Убираем подчёркивание у ссылок */
+  }
+  
+  a:hover {
+    color: #CE242B; /* Цвет ссылки при наведении */
+   
+  }
+
+@media (max-width: 800px) {
+    .main.photo {
+        width: 500px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 600px) {
+    h1 {
+        text-align: center;
+    }
+    
+    .toppannel b{
+        width: 0px;
+        visibility: hidden;
+    }
+    
+    nav {
+        flex-direction: column; 
+        align-items: center;
+    }
+    
+    nav a {
+        font-size: calc(1em + 4px);
+    }
+
+    .main.photo {
+        width: 100%;
+    }
+    
+    table {
+        font-size: calc(1em - 2px);
+    }
+}
+
+
+@media (max-width: 400px) {
+    table {
+        font-size: calc(1em - 4px); /* Уменьшение шрифта таблицы на еще 2px */
+    }
+}
