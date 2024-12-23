@@ -179,8 +179,16 @@ function setupForm() {
             dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
 
             document.querySelectorAll(`.dish[data-category]`)
-            addButtons.forEach(b => b.classList.remove('button-active'));
-            button.classList.add('button-active');   
+            // addButtons.forEach(b => b.classList.remove('button-active'));
+            // button.classList.add('button-active');   
+            // dishElement.classList.add('dishes-active');
+
+            addButtons.forEach(b => {
+                if (b.parentElement.parentElement.dataset.dish !== dishKeyword) {
+                    b.classList.remove('button-active');
+                }
+            });
+            button.classList.add('button-active');
             dishElement.classList.add('dishes-active');
 
             labels.forEach(label => {
@@ -193,8 +201,8 @@ function setupForm() {
 
                 if (labelCategory === dish.category) {
                     const paragraphText = `${dish.name} ${dish.price}₽`
-                    // orderItems.push(dish);
-                    // console.log(orderItems)
+                    orderItems.push(dish);
+                    console.log(orderItems)
                     paragraph.innerHTML = paragraphText;                            
                     
 
@@ -247,14 +255,15 @@ function setupForm() {
             totalSumElement.parentElement.classList.add('hidden');
             labels.forEach(label => label.classList.add('hidden'));
             
+            const button = event.target;
+            const dishElement = button.parentElement.parentElement;
                                            
             document.querySelectorAll(`.dish[data-category]`)
             addButtons.forEach(b => b.classList.remove('button-active'));
 
             addButtons.forEach(b =>{
                 const dishElement = b.parentElement.parentElement;
-                console.log(dishElement)
-                    
+                                   
                 const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
                 dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
             });     
@@ -263,8 +272,11 @@ function setupForm() {
                 const paragraph = label.nextElementSibling;
                 paragraph.classList.add('hidden')
                 paragraph.classList.remove('empty-category')
+                paragraph.innerHTML = 'Блюдо не выбрано';
             })
-            // orderItems.length=0;
+            orderItems = [];
+            Object.keys(order).forEach(key => order[key] = null);
+            totalSumElement.innerHTML = '0₽';
         });
     });
 
@@ -276,19 +288,55 @@ function setupForm() {
 
             if (orderItems.length === 0) {
                 showModal("Ничего не выбрано. .");
-                
                 return;
             }
-            console.log(orderItems)
-            if (orderItems='drink'){
-                console.log(orderItems)
+            
+            else if ((orderItems='drink')||(orderItems='dessert')){
+                showModal("Выберите главное блюдо");
+                return;
             }
 
+            else if (orderItems='salat'){
+                showModal("Выберите суп или главное блюдо");
+                return;
+            }
+
+            else if (orderItems='soup'){
+                showModal("Выберите главное блюдо/салат/стартер");
+                return;
+            }
+            
+            
             
             
         });
     });
+    // sendButton.forEach(buton => {
+    //     buton.addEventListener('click', (event) => {
+    //         const modal = document.getElementById("modal");
+    //         modal.classList.remove("hidden");
+
+    //         if (orderItems.length === 0) {
+    //             showModal("Ничего не выбрано.");
+    //             return;
+    //         }
+
+    //         const selectedCategories = orderItems.map(item => item.category);
+    //         const isValidCombo = COMBOS.some(combo => {
+    //             return Object.keys(combo).every(key => selectedCategories.includes(key));
+    //         });
+
+    //         if (!isValidCombo) {
+    //             showModal("Выбранное комбо не соответствует доступным комбинациям.");
+    //             return;
+    //         }
+
+    //     // Действия при успешной отправке заказа
+    //     });
+    // });
+
     document.getElementById("modal-ok").addEventListener("click", () => {
+        const modal = document.getElementById("modal");
         modal.classList.add("hidden");
     });
 
