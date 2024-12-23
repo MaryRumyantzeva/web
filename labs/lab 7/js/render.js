@@ -1,8 +1,8 @@
 import { dishes } from "./dishes.js"
 
 const comboSection = document.querySelector('.combo')
-const sortedDishes = dishes.sort((a, b) => a.name.localeCompare(b.name));
-
+// const sortedDishes = dishes.sort((a, b) => a.name.localeCompare(b.name));
+let sortedDishes = [];
 // function fn() {}
 
 // const fn = () => {}
@@ -105,7 +105,7 @@ function renderDishes(element) {
 
 }
 
-renderDishes(comboSection)
+// renderDishes(comboSection)
 function totalSummary(order) {
     let totalSum = 0;
     const dishes = Object.values(order)
@@ -319,6 +319,27 @@ function setupForm() {
 
 }
 
-setupForm();
+// setupForm();
+
+
+
+function loadDishes() {
+    fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/dishes')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(dishes => {
+            sortedDishes = dishes.sort((a, b) => a.name.localeCompare(b.name));
+            renderDishes(comboSection);
+            setupForm();
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки данных:', error);
+        });
+}
+loadDishes();
 
 
