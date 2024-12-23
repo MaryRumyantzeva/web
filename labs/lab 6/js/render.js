@@ -43,6 +43,19 @@ const FILTERS = {
     ],
 };
 
+const COMBOS = [
+    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат"},
+    {drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат"},
+    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо"},
+    {soup: "Суп", drink: "Напиток", salat: "Салат"},
+    {drink: "Напиток", mainDish: "Главное блюдо"},
+
+    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат", dessert: 'Десерт'},
+    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", dessert: 'Десерт'},
+    {soup: "Суп", drink: "Напиток", salat: "Салат", dessert: 'Десерт'},
+    {drink: "Напиток", mainDish: "Главное блюдо", dessert: 'Десерт'},
+    {drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат", dessert: 'Десерт'},
+];
 function renderDishes(element) {
 
     for (const category in CATEGORIES) {
@@ -103,9 +116,19 @@ function totalSummary(order) {
     });
     return totalSum
 }
-function setupForm() {
+
+function showModal(message) {
+    const modal = document.getElementById("modal");
+    const modalText = document.getElementById("modal-text");
+    modalText.textContent = message;
+    modal.classList.remove("hidden");
+}
+
+let orderItems = [];
+function setupForm() {    
     const addButtons = document.querySelectorAll('.add-button');
     const resetButton = document.querySelectorAll('.form-button[type="reset"]');
+    const sendButton = document.querySelectorAll('.form-button[type="submit"]');
     console.log(resetButton);
 
     const order = {
@@ -170,6 +193,8 @@ function setupForm() {
 
                 if (labelCategory === dish.category) {
                     const paragraphText = `${dish.name} ${dish.price}₽`
+                    // orderItems.push(dish);
+                    // console.log(orderItems)
                     paragraph.innerHTML = paragraphText;                            
                     
 
@@ -221,10 +246,8 @@ function setupForm() {
             emptyOrderLabel.classList.remove('hidden')
             totalSumElement.parentElement.classList.add('hidden');
             labels.forEach(label => label.classList.add('hidden'));
-                        
-            const button = event.target;
-            const dishElement = button.parentElement.parentElement;
-                    
+            
+                                           
             document.querySelectorAll(`.dish[data-category]`)
             addButtons.forEach(b => b.classList.remove('button-active'));
 
@@ -241,8 +264,36 @@ function setupForm() {
                 paragraph.classList.add('hidden')
                 paragraph.classList.remove('empty-category')
             })
+            // orderItems.length=0;
         });
     });
+
+    sendButton.forEach(buton => {
+        buton.addEventListener('click', (event) => {
+            const modal = document.getElementById("modal");
+            modal.classList.remove("hidden");
+            const SendButton = event.target;
+
+            if (orderItems.length === 0) {
+                showModal("Ничего не выбрано. .");
+                
+                return;
+            }
+            console.log(orderItems)
+            if (orderItems='drink'){
+                console.log(orderItems)
+            }
+
+            
+            
+        });
+    });
+    document.getElementById("modal-ok").addEventListener("click", () => {
+        modal.classList.add("hidden");
+    });
+
+    
+
 }
 
 
