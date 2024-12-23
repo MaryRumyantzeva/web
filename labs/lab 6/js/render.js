@@ -302,7 +302,11 @@ function setupForm() {
                 showModal("Выберите главное блюдо/салат/стартер");
                 return;
             }
-            
+            else if ((orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')))
+                ||(orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))){
+                showModal("Выберите напиток");
+                return;
+            }
             
             
             
