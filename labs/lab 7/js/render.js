@@ -1,7 +1,6 @@
 import { dishes } from "./dishes.js"
 
 const comboSection = document.querySelector('.combo')
-// const sortedDishes = dishes.sort((a, b) => a.name.localeCompare(b.name));
 let sortedDishes = [];
 // function fn() {}
 
@@ -105,7 +104,7 @@ function renderDishes(element) {
 
 }
 
-// renderDishes(comboSection)
+
 function totalSummary(order) {
     let totalSum = 0;
     const dishes = Object.values(order)
@@ -318,8 +317,6 @@ function setupForm() {
     
 
 }
-
-// setupForm();
 
 
 
