@@ -329,7 +329,7 @@ function loadDishes() {
     fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/dishes')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network error!!!!');
             }
             return response.json();
         })
@@ -339,7 +339,7 @@ function loadDishes() {
             setupForm();
         })
         .catch(error => {
-            console.error('Ошибка загрузки данных:', error);
+            console.error('Ошибка! ', error);
         });
 }
 loadDishes();
