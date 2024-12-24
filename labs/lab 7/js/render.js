@@ -9,8 +9,8 @@ let sortedDishes = [];
 const CATEGORIES = {
     dessert: 'Десерт',
     drink: 'Напиток',
-    salat: 'Салат',
-    mainDish: 'Главное блюдо',
+    'salad': 'Салат',
+    'main-course': 'Главное блюдо',
     soup: 'Суп',
 
 };
@@ -21,12 +21,12 @@ const FILTERS = {
         { label: "мясной", value: "meat" },
         { label: "вегетарианский", value: "veg" }
     ],
-    mainDish: [
+    'main-course': [
         { label: "рыбное", value: "fish" },
         { label: "мясное", value: "meat" },
         { label: "вегетарианское", value: "veg" }
     ],
-    salat: [
+    'salad': [
         { label: "рыбный", value: "fish" },
         { label: "мясной", value: "meat" },
         { label: "вегетарианский", value: "veg" }
@@ -43,17 +43,17 @@ const FILTERS = {
 };
 
 const COMBOS = [
-    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат"},
-    {drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат"},
-    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо"},
-    {soup: "Суп", drink: "Напиток", salat: "Салат"},
-    {drink: "Напиток", mainDish: "Главное блюдо"},
+    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат"},
+    {drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат"},
+    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо"},
+    {soup: "Суп", drink: "Напиток", 'salad': "Салат"},
+    {drink: "Напиток", 'main-course': "Главное блюдо"},
 
-    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат", dessert: 'Десерт'},
-    {soup: "Суп", drink: "Напиток", mainDish: "Главное блюдо", dessert: 'Десерт'},
-    {soup: "Суп", drink: "Напиток", salat: "Салат", dessert: 'Десерт'},
-    {drink: "Напиток", mainDish: "Главное блюдо", dessert: 'Десерт'},
-    {drink: "Напиток", mainDish: "Главное блюдо", salat: "Салат", dessert: 'Десерт'},
+    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт'},
+    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт'},
+    {soup: "Суп", drink: "Напиток", 'salad': "Салат", dessert: 'Десерт'},
+    {drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт'},
+    {drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт'},
 ];
 function renderDishes(element) {
 
@@ -132,7 +132,7 @@ function setupForm() {
 
     const order = {
         soup: null,
-        mainDish: null,
+        'main-course': null,
         drink: null,
     }
 
@@ -292,17 +292,17 @@ function setupForm() {
                 return;
             }
 
-            else if ((orderCategories.includes('salat') )  && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish') )){
+            else if ((orderCategories.includes('salad') )  && !(orderCategories.includes('soup')) && !(orderCategories.includes('main-course') )){
                 showModal("Выберите суп или главное блюдо");
                 return;
             }
 
-            else if (orderCategories.includes('soup') && !(orderCategories.includes('salat') ) && !(orderCategories.includes('mainDish') )){
+            else if (orderCategories.includes('soup') && !(orderCategories.includes('salad') ) && !(orderCategories.includes('main-course') )){
                 showModal("Выберите главное блюдо/салат/стартер");
                 return;
             }
-            else if ((orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')))
-                ||(orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))){
+            else if ((orderCategories.includes('soup') && (orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && !(orderCategories.includes('drink')))
+                ||(orderCategories.includes('soup') && (orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))){
                 showModal("Выберите напиток");
                 return;
             }
