@@ -1,0 +1,167 @@
+header {
+    padding-inline:20px;
+    padding-top: 10px;
+    color: black;
+    flex: 1;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 1200px;
+    margin-right: auto;
+    font-size: 16px;
+    
+}
+
+body{
+    font-family: "Roboto", sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.main-menu li {
+    display: inline;
+    margin-right: 10px;
+    font-size: 24px;
+    padding-right: 16px;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style: none;
+    width: 100%; 
+}
+
+nav li {
+    display: inline;
+    font-size: 18px;
+    padding-right: 16px;
+    
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+}
+
+nav a:hover,
+nav .active {
+    color: red;
+}
+
+form{
+    width: 100%;
+}
+
+fieldset {
+    border: none;
+    width: 32%;
+}
+
+legend {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.podpiska{
+    font-size: 14px;
+    margin-top: 1px;
+    font-style: italic;
+}
+.title-order {
+    text-align: center;
+    color: black;
+    margin-bottom: 32px;
+}
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 60px;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="time"],
+select,
+textarea {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 1px solid black; 
+    border-radius: 4px; 
+}
+textarea {
+    max-width: 96%;
+    max-height: 100%;
+}
+
+input[type="checkbox"],
+input[type="radio"] 
+
+.order {
+    margin-top: 6px;
+}
+
+.form-button { width: 40%;
+ background-color: white; 
+ padding: 10px 30px; 
+ border-width: thin; 
+ border-color: black;
+ border-radius: 2px;
+ cursor: pointer;
+ font-size: 16px; 
+ margin: 10px; 
+}
+
+.form-button:hover {
+    background-color: tomato;
+    color: white;
+}
+
+.empty-category {
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.hidden {
+    display: none;
+}
+
+.empty-order-label{
+    margin-bottom: 30px;
+
+}
+
+.orderPrice{
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+#totalsum {
+    font-size: 20px;
+    margin-top: 5px;
+}
