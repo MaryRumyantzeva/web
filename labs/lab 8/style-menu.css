@@ -287,11 +287,12 @@ textarea {
     max-height: 100%;
 }
 
-input[type="checkbox"],
-input[type="radio"] {}
+/* input[type="checkbox"],
+input[type="radio"] {} */
 
 .order {
     margin-top: 6px;
+    display: none;
 }
 
 .form-button {
@@ -481,7 +482,10 @@ input[type="radio"] {}
     padding: 0 40px;
 }
 
-.order-total-label {}
+.order-total-label {
+    font-size: 26px;
+    font-style: oblique;
+}
 
 .order-total-action {
     padding: 12px 16px;
