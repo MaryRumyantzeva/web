@@ -4,10 +4,10 @@
 <head>
     <title>Task 8</title>
     <link rel="stylesheet" type="text/css" href="style-menu.css" />
-    <link rel="stylesheet" type="text/css" href="style-index.css" />
+    <link rel="stylesheet" type="text/css" href="style-main.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <script type="module" src="./js/dishes.js" defer></script>
-    <script type="module" src="./js/render.js" defer></script>
+    <script type="module" src="./js/menu.js"></script>
 </head>
 
 <body>
@@ -165,11 +165,9 @@
         </div>
     </main>
 
-    <div id="modal" class="modal hidden">
-        <div class="modal-content">
-            <p id="modal-text">Ничего не выбрано. Выберите блюда для заказа</p>
-            <button id="modal-ok" class="modal-button">Окей 👌</button>
-        </div>
+    <div class="order-total">
+        <p class="order-total-label">Итого: 0₽</p>
+        <a href="/buyorder.html" class="order-total-action">Перейти к оформлению</a>
     </div>
 
     <footer id="contacts">

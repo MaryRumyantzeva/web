@@ -1,11 +1,3 @@
-import { dishes } from "./dishes.js"
-
-const comboSection = document.querySelector('.combo')
-let sortedDishes = [];
-// function fn() {}
-
-// const fn = () => {}
-
 const CATEGORIES = {
     dessert: 'Десерт',
     drink: 'Напиток',
@@ -43,20 +35,20 @@ const FILTERS = {
 };
 
 const COMBOS = [
-    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат"},
-    {drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат"},
-    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо"},
-    {soup: "Суп", drink: "Напиток", 'salad': "Салат"},
-    {drink: "Напиток", 'main-course': "Главное блюдо"},
+    { soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат" },
+    { drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат" },
+    { soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо" },
+    { soup: "Суп", drink: "Напиток", 'salad': "Салат" },
+    { drink: "Напиток", 'main-course': "Главное блюдо" },
 
-    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт'},
-    {soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт'},
-    {soup: "Суп", drink: "Напиток", 'salad': "Салат", dessert: 'Десерт'},
-    {drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт'},
-    {drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт'},
+    { soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт' },
+    { soup: "Суп", drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт' },
+    { soup: "Суп", drink: "Напиток", 'salad': "Салат", dessert: 'Десерт' },
+    { drink: "Напиток", 'main-course': "Главное блюдо", dessert: 'Десерт' },
+    { drink: "Напиток", 'main-course': "Главное блюдо", 'salad': "Салат", dessert: 'Десерт' },
 ];
-function renderDishes(element) {
 
+export function renderDishes(element, sortedDishes) {
     for (const category in CATEGORIES) {
         const dishSection = document.createElement('section');
         dishSection.classList.add('dishes');
@@ -97,7 +89,8 @@ function renderDishes(element) {
                 </div>
                 </div>`;
             }
-        })
+        });
+
         dishSection.appendChild(categoryDiv);
         element.after(dishSection)
     }
@@ -123,50 +116,34 @@ function showModal(message) {
     modal.classList.remove("hidden");
 }
 
-let orderItems = [];
-function setupForm() {    
+
+export function setupGetLunch(sortedDishes) {
+    const orderTotalLabelElement = document.querySelector('.order-total-label');
+    const bottomTotalSumElement = document.querySelector('.order-total');
+    bottomTotalSumElement.classList.add('hidden');
+
     const addButtons = document.querySelectorAll('.add-button');
-    const resetButton = document.querySelectorAll('.form-button[type="reset"]');
-    const sendButton = document.querySelectorAll('.form-button[type="submit"]');
-    console.log(resetButton);
+    const orderItems = JSON.parse(localStorage.getItem('order') || '[]');
 
-    const order = {
-        soup: null,
-        'main-course': null,
-        drink: null,
-    }
+    const order = orderItems.reduce((prev, current) => {
+        const dish = sortedDishes.find(dish => dish.keyword === current);
+        prev[dish.category] = dish;
+        return prev;
+    }, {});
 
-    const emptyOrderLabel = document.querySelector('.empty-order-label')
-    const labels = document.querySelectorAll('#dishes label[data-category]');
-    const totalSumElement = document.querySelector('#totalsum');
+    Object.values(order).forEach((dishFromOrder) => {
+        const dishElements = Array.from(document.querySelectorAll('.dish'));
+        const dishElement = dishElements.find(dishElement => dishElement.dataset.dish === dishFromOrder.keyword);
+        const button = dishElement.querySelector('button');
 
-    
-
-    totalSumElement.parentElement.classList.add('hidden');
-    labels.forEach(label => label.classList.add('hidden'));
-
-    labels.forEach(label => {
-        const paragraph = document.createElement('p');
-        const input = document.createElement('input');
-
-        input.name = label.dataset.category
-        input.classList.add('hidden');
-
-        paragraph.innerHTML = 'Блюдо не выбрано';
-        paragraph.classList.add('empty-category')
-        paragraph.classList.add('hidden')
-
-        label.after(paragraph);
-        paragraph.after(input);
-    })
+        button.classList.add('button-active');
+        dishElement.classList.add('dishes-active');
+        bottomTotalSumElement.classList.remove('hidden');
+        orderTotalLabelElement.textContent = `Итого: ${totalSummary(order)}₽`;
+    });
 
     addButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            emptyOrderLabel.classList.add('hidden')
-            totalSumElement.parentElement.classList.remove('hidden');
-            labels.forEach(label => label.classList.remove('hidden'));
-
-                        
             const button = event.target;
             const dishElement = button.parentElement.parentElement;
             const dishKeyword = dishElement.dataset.dish
@@ -180,32 +157,15 @@ function setupForm() {
             const dishButtonInThisCategory = dishElement.parentElement.querySelectorAll('.add-button');
             dishButtonInThisCategory.forEach(b => b.classList.remove('button-active'));
             document.querySelectorAll(`.dish[data-category]`)
-         
 
             button.classList.add('button-active');
             dishElement.classList.add('dishes-active');
+            bottomTotalSumElement.classList.remove('hidden');
+            orderTotalLabelElement.textContent = `Итого: ${totalSummary(order)}₽`;
 
-            labels.forEach(label => {
-                const labelCategory = label.dataset.category;
+            const storedItems = Object.values(order).map(value => value.keyword);
 
-                const paragraph = label.nextElementSibling;
-                const input = paragraph.nextElementSibling;
-
-                paragraph.classList.remove('hidden')
-
-                if (labelCategory === dish.category) {
-                    const paragraphText = `${dish.name} ${dish.price}₽`
-                    orderItems.push(dish);
-                    console.log(orderItems)
-                    paragraph.innerHTML = paragraphText;                            
-                    
-
-                    input.value = dish.keyword;
-                }
-                paragraph.classList.add('empty-category')
-            })
-
-            totalSumElement.innerHTML = `${totalSummary(order)}₽`;
+            localStorage.setItem('order', JSON.stringify(storedItems));
         });
     });
 
@@ -241,44 +201,150 @@ function setupForm() {
             }
         });
     });
+    // addButtons.forEach(b => b.classList.remove('button-active'));
+
+    // addButtons.forEach(b => {
+    //     const dishElement = b.parentElement.parentElement;
+
+    //     const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
+    //     dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
+    // });
+}
 
 
-    resetButton.forEach(buton => {
-        buton.addEventListener('click', (event) => {
-            emptyOrderLabel.classList.remove('hidden')
-            totalSumElement.parentElement.classList.add('hidden');
-            labels.forEach(label => label.classList.add('hidden'));
-            
-            const button = event.target;
-            const dishElement = button.parentElement.parentElement;
-                                           
-            document.querySelectorAll(`.dish[data-category]`)
-            addButtons.forEach(b => b.classList.remove('button-active'));
+export function setupForm(sortedDishes) {
+    const rootElement = document.querySelector('.order');
+    const resetButton = document.querySelector('.form-button[type="reset"]');
+    const sendButton = document.querySelectorAll('.form-button[type="submit"]');
 
-            addButtons.forEach(b =>{
-                const dishElement = b.parentElement.parentElement;
-                                   
-                const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
-                dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
-            });     
-            
+    const emptyOrderLabel = document.querySelector('.empty-order-label')
+    const labels = document.querySelectorAll('#dishes label[data-category]');
+    const totalSumElement = document.querySelector('#totalsum');
+
+    totalSumElement.parentElement.classList.add('hidden');
+    labels.forEach(label => label.classList.add('hidden'));
+
+    rootElement.classList.remove('hidden');
+    labels.forEach(label => {
+        const paragraph = document.createElement('p');
+        const input = document.createElement('input');
+
+        input.name = label.dataset.category
+        input.classList.add('hidden');
+
+        paragraph.innerHTML = 'Блюдо не выбрано';
+        paragraph.classList.add('empty-category')
+        paragraph.classList.add('hidden')
+
+        label.after(paragraph);
+        paragraph.after(input);
+    })
+
+    const orderItems = JSON.parse(localStorage.getItem('order') || '[]');
+
+    const order = orderItems.reduce((prev, current) => {
+        const dish = sortedDishes.find(dish => dish.keyword === current);
+        prev[dish.category] = dish;
+        return prev;
+    }, {});
+
+    Object.values(order).forEach(dish => {
+        emptyOrderLabel.classList.add('hidden')
+        totalSumElement.parentElement.classList.remove('hidden');
+        labels.forEach(label => label.classList.remove('hidden'));
+
+        labels.forEach(label => {
+            const labelCategory = label.dataset.category;
+
+            const paragraph = label.nextElementSibling;
+            const input = paragraph.nextElementSibling;
+
+            paragraph.classList.remove('hidden')
+
+            if (labelCategory === dish.category) {
+                const paragraphText = `${dish.name} ${dish.price}₽`
+                orderItems.push(dish);
+                paragraph.innerHTML = paragraphText;
+                input.value = dish.keyword;
+            }
+            paragraph.classList.add('empty-category')
+        })
+
+        totalSumElement.innerHTML = `${totalSummary(order)}₽`;
+    })
+
+    const removeButtons = document.querySelectorAll('.remove-button');
+
+    function handleEmptyOrder() {
+        emptyOrderLabel.classList.remove('hidden')
+        totalSumElement.parentElement.classList.add('hidden');
+        labels.forEach(label => label.classList.add('hidden'));
+
+        document.querySelectorAll(`.dish[data-category]`)
+
+
+        labels.forEach(label => {
+            const paragraph = label.nextElementSibling;
+            paragraph.classList.add('hidden')
+            paragraph.classList.remove('empty-category')
+            paragraph.innerHTML = 'Блюдо не выбрано';
+        })
+
+        Object.keys(order).forEach(key => order[key] = null);
+        totalSumElement.innerHTML = '0₽';
+        localStorage.removeItem('order');
+
+        const dishDivs = document.querySelectorAll('.dish');
+        dishDivs.forEach(dishDiv => dishDiv.remove());
+
+        const emptyOrderHeading = document.querySelector(".empty-order-heading");
+        emptyOrderHeading.classList.remove("hidden");
+    }
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const dishDiv = button.parentElement.parentElement;
+            const dishKeyword = dishDiv.dataset.dish;
+
+            const dish = Object.values(order).find(d => d.keyword === dishKeyword);
+            delete order[dish.category];
+
+            const storedItems = Object.values(order).map(value => value.keyword);
+            localStorage.setItem('order', JSON.stringify(storedItems));
+            dishDiv.remove();
+            emptyOrderLabel.classList.remove('hidden');
+
             labels.forEach(label => {
+                const labelCategory = label.dataset.category;
+    
                 const paragraph = label.nextElementSibling;
-                paragraph.classList.add('hidden')
-                paragraph.classList.remove('empty-category')
-                paragraph.innerHTML = 'Блюдо не выбрано';
-            })
-            orderItems = [];
-            Object.keys(order).forEach(key => order[key] = null);
-            totalSumElement.innerHTML = '0₽';
-        });
-    });
+                const input = paragraph.nextElementSibling;
+    
+                paragraph.classList.remove('hidden')
+    
+                console.log(labelCategory, dish.category)
+                if (labelCategory === dish.category) {
+                    paragraph.innerHTML = 'Блюдо не выбрано';
+                    input.value = null;
+                }
+                paragraph.classList.add('empty-category')
+            });
 
-    sendButton.forEach(buton => {
-        buton.addEventListener('click', (event) => {
+            const totalSumElement = document.querySelector('#totalsum');
+            totalSumElement.textContent = `${totalSummary(order)}₽`;
+
+            if (Object.values(order).length === 0) {
+                handleEmptyOrder();
+                return;
+            }
+        })
+    })
+    resetButton.addEventListener('click', handleEmptyOrder);
+
+    sendButton.forEach(button => {
+        button.addEventListener('click', (event) => {
             const modal = document.getElementById("modal");
             modal.classList.remove("hidden");
-            const SendButton = event.target;
 
             const orderCategories = orderItems.map(dish => dish.category).filter((v, i, a) => a.indexOf(v) === i);
 
@@ -286,76 +352,64 @@ function setupForm() {
                 showModal("Ничего не выбрано. .");
                 return;
             }
-            
-            else if ((orderCategories.includes('drink')  && (orderItems.length === 1))||(orderCategories.includes('drink') && orderCategories.includes('dessert') && orderItems.length <=2)
-            ||(orderCategories.includes('dessert')  && (orderItems.length === 1))){
+
+            else if ((orderCategories.includes('drink') && (orderItems.length === 1)) || (orderCategories.includes('drink') && orderCategories.includes('dessert') && orderItems.length <= 2)
+                || (orderCategories.includes('dessert') && (orderItems.length === 1))) {
                 showModal("Выберите главное блюдо");
                 return;
             }
 
-            else if ((orderCategories.includes('salat') )  && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish') ) ||
-            (orderCategories.includes('salat') )  && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') ) ||
-            (orderCategories.includes('salat') )  && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') ) && (orderCategories.includes('dessert') )){
+            else if ((orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) ||
+                (orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
+                (orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
                 showModal("Выберите суп или главное блюдо");
                 return;
             }
 
-            else if ((orderCategories.includes('soup') )  && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish') ) ||
-            (orderCategories.includes('soup') )  && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') )||
-            (orderCategories.includes('soup') )  && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') ) && (orderCategories.includes('dessert') )){
+            else if ((orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) ||
+                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
+                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
                 showModal("Выберите салат");
                 return;
             }
 
-            else if (orderCategories.includes('soup') && !(orderCategories.includes('salat') ) && !(orderCategories.includes('mainDish') ) ||
-            (orderCategories.includes('soup') )  && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') )||
-            (orderCategories.includes('soup') )  && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish') ) && (orderCategories.includes('drink') ) && (orderCategories.includes('dessert') )){
+            else if (orderCategories.includes('soup') && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) ||
+                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
+                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
                 showModal("Выберите главное блюдо/салат/стартер");
                 return;
             }
             else if ((orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')))
-                ||(orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))){
+                || (orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))) {
                 showModal("Выберите напиток");
                 return;
             }
-             else{
+            else {
                 const modal = document.getElementById("modal");
                 modal.classList.add("hidden");
-             }
-            
-            
+            }
+
+
         });
     });
-  
 
     document.getElementById("modal-ok").addEventListener("click", () => {
         const modal = document.getElementById("modal");
         modal.classList.add("hidden");
     });
-
-    
-
 }
 
 
 
-function loadDishes() {
-    fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/dishes')
+export function loadDishes() {
+    return fetch('https://edu.std-900.ist.mospolytech.ru/labs/api/dishes')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network error!!!!');
             }
             return response.json();
         })
-        .then(dishes => {
-            sortedDishes = dishes.sort((a, b) => a.name.localeCompare(b.name));
-            renderDishes(comboSection);
-            setupForm();
-        })
         .catch(error => {
             console.error('Ошибка! ', error);
         });
 }
-loadDishes();
-
-
