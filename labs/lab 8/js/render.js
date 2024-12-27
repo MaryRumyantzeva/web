@@ -131,6 +131,25 @@ export function setupGetLunch(sortedDishes) {
         return prev;
     }, {});
 
+    const orderLink = document.querySelector('.order-total-action');
+    orderLink.addEventListener('click', () => window.location.replace('./buyorder.html'));
+
+    const orderKeys = Object.keys(order);
+
+    const isOrderValid = COMBOS.some(combo => {
+        const comboKeys = Object.keys(combo);
+        if (comboKeys.every(comboKey => orderKeys.includes(comboKey))) {
+            return true;
+        }
+        return false;
+    })
+
+    if (isOrderValid) {
+        orderLink.disabled = false;
+    } else {
+        orderLink.disabled = true;
+    }
+
     Object.values(order).forEach((dishFromOrder) => {
         const dishElements = Array.from(document.querySelectorAll('.dish'));
         const dishElement = dishElements.find(dishElement => dishElement.dataset.dish === dishFromOrder.keyword);
@@ -144,6 +163,7 @@ export function setupGetLunch(sortedDishes) {
 
     addButtons.forEach(button => {
         button.addEventListener('click', (event) => {
+            const orderLink = document.querySelector('.order-total-action');
             const button = event.target;
             const dishElement = button.parentElement.parentElement;
             const dishKeyword = dishElement.dataset.dish
@@ -166,6 +186,22 @@ export function setupGetLunch(sortedDishes) {
             const storedItems = Object.values(order).map(value => value.keyword);
 
             localStorage.setItem('order', JSON.stringify(storedItems));
+
+            const orderKeys = Object.keys(order);
+
+            const isOrderValid = COMBOS.some(combo => {
+                const comboKeys = Object.keys(combo);
+                if (comboKeys.every(comboKey => orderKeys.includes(comboKey))) {
+                    return true;
+                }
+                return false;
+            })
+
+            if (isOrderValid) {
+                orderLink.disabled = false;
+            } else {
+                orderLink.disabled = true;
+            }
         });
     });
 
@@ -229,7 +265,7 @@ export function setupForm(sortedDishes) {
         const paragraph = document.createElement('p');
         const input = document.createElement('input');
 
-        input.name = label.dataset.category
+        input.name = label.dataset.category + '_id';
         input.classList.add('hidden');
 
         paragraph.innerHTML = 'Блюдо не выбрано';
@@ -265,7 +301,7 @@ export function setupForm(sortedDishes) {
                 const paragraphText = `${dish.name} ${dish.price}₽`
                 orderItems.push(dish);
                 paragraph.innerHTML = paragraphText;
-                input.value = dish.keyword;
+                input.value = dish.id;
             }
             paragraph.classList.add('empty-category')
         })
@@ -316,12 +352,12 @@ export function setupForm(sortedDishes) {
 
             labels.forEach(label => {
                 const labelCategory = label.dataset.category;
-    
+
                 const paragraph = label.nextElementSibling;
                 const input = paragraph.nextElementSibling;
-    
+
                 paragraph.classList.remove('hidden')
-    
+
                 console.log(labelCategory, dish.category)
                 if (labelCategory === dish.category) {
                     paragraph.innerHTML = 'Блюдо не выбрано';
@@ -340,57 +376,69 @@ export function setupForm(sortedDishes) {
         })
     })
     resetButton.addEventListener('click', handleEmptyOrder);
+    const form = document.forms[0];
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const modal = document.getElementById("modal");
+        modal.classList.remove("hidden");
 
-    sendButton.forEach(button => {
-        button.addEventListener('click', (event) => {
+        const orderCategories = orderItems.map(dish => dish.category).filter((v, i, a) => a.indexOf(v) === i);
+
+        if (orderItems.length === 0) {
+            showModal("Ничего не выбрано. .");
+            return;
+        }
+
+        else if ((orderCategories.includes('drink') && (orderItems.length === 1)) || (orderCategories.includes('drink') && orderCategories.includes('dessert') && orderItems.length <= 2)
+            || (orderCategories.includes('dessert') && (orderItems.length === 1))) {
+            showModal("Выберите главное блюдо");
+            return;
+        }
+
+        else if ((orderCategories.includes('salad')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('main-course')) ||
+            (orderCategories.includes('salad')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('main-course')) && (orderCategories.includes('drink')) ||
+            (orderCategories.includes('salad')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('main-course')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
+            showModal("Выберите суп или главное блюдо");
+            return;
+        }
+
+        else if ((orderCategories.includes('soup')) && !(orderCategories.includes('salad')) && (orderCategories.includes('main-course')) ||
+            (orderCategories.includes('soup')) && !(orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && (orderCategories.includes('drink')) ||
+            (orderCategories.includes('soup')) && !(orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
+            showModal("Выберите салат");
+            return;
+        }
+
+        else if (orderCategories.includes('soup') && !(orderCategories.includes('salad')) && !(orderCategories.includes('main-course')) ||
+            (orderCategories.includes('soup')) && !(orderCategories.includes('salad')) && !(orderCategories.includes('main-course')) && (orderCategories.includes('drink')) ||
+            (orderCategories.includes('soup')) && !(orderCategories.includes('salad')) && !(orderCategories.includes('main-course')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
+            showModal("Выберите главное блюдо/салат/стартер");
+            return;
+        }
+        else if ((orderCategories.includes('soup') && (orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && !(orderCategories.includes('drink')))
+            || (orderCategories.includes('soup') && (orderCategories.includes('salad')) && (orderCategories.includes('main-course')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))) {
+            showModal("Выберите напиток");
+            return;
+        }
+        else {
             const modal = document.getElementById("modal");
-            modal.classList.remove("hidden");
+            modal.classList.add("hidden");
+        }
+        const BASE_URL = 'https://edu.std-900.ist.mospolytech.ru';
+        const API_KEY = '74ca26d4-79b4-484e-a3a8-201b7d84a758';
 
-            const orderCategories = orderItems.map(dish => dish.category).filter((v, i, a) => a.indexOf(v) === i);
+        const formData = new FormData(form);
 
-            if (orderItems.length === 0) {
-                showModal("Ничего не выбрано. .");
-                return;
-            }
-
-            else if ((orderCategories.includes('drink') && (orderItems.length === 1)) || (orderCategories.includes('drink') && orderCategories.includes('dessert') && orderItems.length <= 2)
-                || (orderCategories.includes('dessert') && (orderItems.length === 1))) {
-                showModal("Выберите главное блюдо");
-                return;
-            }
-
-            else if ((orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) ||
-                (orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
-                (orderCategories.includes('salat')) && !(orderCategories.includes('soup')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
-                showModal("Выберите суп или главное блюдо");
-                return;
-            }
-
-            else if ((orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) ||
-                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
-                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
-                showModal("Выберите салат");
-                return;
-            }
-
-            else if (orderCategories.includes('soup') && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) ||
-                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) ||
-                (orderCategories.includes('soup')) && !(orderCategories.includes('salat')) && !(orderCategories.includes('mainDish')) && (orderCategories.includes('drink')) && (orderCategories.includes('dessert'))) {
-                showModal("Выберите главное блюдо/салат/стартер");
-                return;
-            }
-            else if ((orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')))
-                || (orderCategories.includes('soup') && (orderCategories.includes('salat')) && (orderCategories.includes('mainDish')) && !(orderCategories.includes('drink')) && (orderCategories.includes('dessert')))) {
-                showModal("Выберите напиток");
-                return;
-            }
-            else {
-                const modal = document.getElementById("modal");
-                modal.classList.add("hidden");
-            }
-
-
-        });
+        fetch(BASE_URL + '/labs/api/orders?api_key=' + API_KEY, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            localStorage.clear();
+            window.location.reload();
+        })
+        .catch(reason => alert('Не удалось оформить заказ!'))
     });
 
     document.getElementById("modal-ok").addEventListener("click", () => {
