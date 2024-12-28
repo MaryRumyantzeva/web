@@ -169,7 +169,7 @@ export function setupGetLunch(sortedDishes) {
             const dishKeyword = dishElement.dataset.dish
 
             const dish = sortedDishes.find(value => value.keyword === dishKeyword);
-            order[dish.category] = dish;
+            order[dish.category] = dish;    
 
             const dishElementsInThisCategory = dishElement.parentElement.querySelectorAll('.dish');
             dishElementsInThisCategory.forEach(el => el.classList.remove('dishes-active'));
@@ -316,9 +316,6 @@ export function setupForm(sortedDishes) {
         totalSumElement.parentElement.classList.add('hidden');
         labels.forEach(label => label.classList.add('hidden'));
 
-        document.querySelectorAll(`.dish[data-category]`)
-
-
         labels.forEach(label => {
             const paragraph = label.nextElementSibling;
             paragraph.classList.add('hidden')
@@ -424,6 +421,7 @@ export function setupForm(sortedDishes) {
             const modal = document.getElementById("modal");
             modal.classList.add("hidden");
         }
+
         const BASE_URL = 'https://edu.std-900.ist.mospolytech.ru';
         const API_KEY = '74ca26d4-79b4-484e-a3a8-201b7d84a758';
 
