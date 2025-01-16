@@ -214,6 +214,7 @@ h1 {
     justify-content: space-between;
     padding: 20px;
     overflow: hidden;
+    height: 40%;
 }
 
 .add-button {
@@ -233,14 +234,7 @@ h1 {
     color: white;
 }
 
-.good-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 5px;
-    height: 40%;
-}
+
 
 .good-rating{
     display: block;
@@ -344,7 +338,11 @@ h1 {
 
 
 .button-active{
-    color: blue;
+    background-color: rgb(218, 1, 121);
+
+}
+.goods-active{
+    border: 2px solid rgb(218, 1, 121);
 }
  
 

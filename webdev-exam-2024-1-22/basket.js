@@ -1,13 +1,10 @@
-import {renderGoods} from "./catalog1.js"
+function loadCartFromLocalStorage() {
+    const savedCart = localStorage.getItem('cart');
+    return JSON.parse(savedCart)
+}
 
-function totalSummary(order) {
-    let totalSum = 0;
-    const goods = Object.values(order)
-    goods.forEach(function (good) {
-        if (good !== null) {
-            totalSum += good.price;
-        }
-    });
+function totalSummary(cart) {
+    const totalSum = cart.reduce((p, c) => p + (c.discount_price ?? p.actual_price), 0)
     return totalSum
 }
 
@@ -18,7 +15,6 @@ function showModal(message) {
     modal.classList.remove("hidden");
 }
 
-import { addToCart } from './basket.js';
 
 export function renderGoods(goods) {
     const categoryContainer = document.querySelector('.cata-log');
@@ -60,4 +56,125 @@ export function renderGoods(goods) {
             addToCart(good);
         });
     });
+
+    
 }
+
+function updateCartPage() {
+    const cartContainer = document.querySelector('.cart-items');
+    cartContainer.innerHTML = '';
+    const cart = loadCartFromLocalStorage();
+
+    if (Object.keys(cart).length === 0) {
+        cartContainer.innerHTML = '<p>Корзина пуста. Перейдите в каталог, чтобы добавить товары.</p>';
+    } else {
+        Object.values(cart).forEach((item) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('cart-item');
+            const goodDiv = document.createElement('div');
+            goodDiv.classList.add('good');
+            const discountPercentage = item.discount_price
+            ? Math.round(((item.actual_price - item.discount_price) / item.actual_price) * 100)
+            : null;
+            itemDiv.innerHTML = `
+                <div class="cart-item-info">
+                <img src="${item.image_url}" alt="${item.name}" class="good-img">
+                <div class="good-content">
+                    <p class="good-title">${item.name}</p>
+                    <p class="good-rating">
+                    ${item.rating}
+                    <span class="rating-stars" data-rating="${item.rating}"></span>
+                </p>
+                    <p class="good-price">
+                    ${item.discount_price ? `<span class="striked-price">${item.actual_price}₽</span>` : `${item.actual_price}₽`}
+                    ${item.discount_price
+                ? `<span class="discount-percentage" style="color: red;">-${discountPercentage}%</span>` : ''}
+                </p>
+                    ${item.discount_price ? `<p class="discount-price">${item.discount_price}₽</p>` : ''}
+                </div>
+                <button class="remove-item" data-id="${item.id}">Удалить</button>
+                </div>
+            `;
+            cartContainer.appendChild(itemDiv);
+        });
+
+        document.querySelectorAll('.remove-item').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                const id = Number(event.target.dataset.id);
+                const newCart = cart.filter(good => good.id !== id);
+                localStorage.setItem('cart', JSON.stringify(newCart));
+                updateDeliveryPrice();
+                updateCartPage();
+            });
+        });
+
+        function updateStars() {
+            document.querySelectorAll('.rating-stars').forEach(starContainer => {
+                const rating = parseFloat(starContainer.dataset.rating);
+                starContainer.innerHTML = '';
+        
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('i');
+                    if (i <= Math.floor(rating)) {
+                        star.classList.add('bi', 'bi-star-fill'); // Закрашенная звезда
+                    } else if (i - rating < 1) {
+                        star.classList.add('bi', 'bi-star-half'); // Полузакрашенная звезда
+                    } else {
+                        star.classList.add('bi', 'bi-star'); // Пустая звезда
+                    }
+                    starContainer.appendChild(star);
+                }
+            });
+        }
+        updateStars();
+    }
+}
+
+const dateInput = document.querySelector('#date');
+const timeOfTheDayInput = document.querySelector('#delivery-time');
+
+function updateDeliveryPrice() {
+    const cart = loadCartFromLocalStorage();
+
+    const totalContainer = document.querySelector('.cart-total');
+
+    const date = dateInput.value;
+    const timeOfTheDay = timeOfTheDayInput.value;
+    let deliveryPrice = 200;
+    const year = date.slice(0, date.indexOf('-'));
+    const month = date.slice(year.length + 1, year.length + 3);
+    const day = date.slice(year.length + month.length + 2);
+    
+    const dateObj = new Date(year, month - 1, day);
+    const isTodayAWorkingDay = dateObj.getDay() < 6;
+    const isPastSix = Number(timeOfTheDay.slice(0, timeOfTheDay.indexOf('-'))) >= 18;
+
+    const areInputsComplete = (year && month && day && timeOfTheDay) || false;
+
+    if (isTodayAWorkingDay && isPastSix) {
+        deliveryPrice += 200
+    }
+    if (!isTodayAWorkingDay) {
+        deliveryPrice += 300
+    }
+    if (!areInputsComplete) {
+        deliveryPrice = 200
+    }
+
+    totalContainer.innerHTML = `
+        <p class="totalContainerSum">Итоговая стоимость: ${totalSummary(cart) + deliveryPrice}₽</p><br>
+        <p class="totalContainerDelivery">(Стоимость доставки: ${deliveryPrice}₽)</p>
+    `;
+}
+
+dateInput.addEventListener('change', (event) => {
+    updateDeliveryPrice()
+})
+timeOfTheDayInput.addEventListener('change', (event) => {
+    updateDeliveryPrice()
+})
+
+updateCartPage();
+updateDeliveryPrice();
+
+

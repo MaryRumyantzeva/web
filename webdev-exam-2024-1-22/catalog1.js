@@ -4,6 +4,7 @@ const apiKey = '74ca26d4-79b4-484e-a3a8-201b7d84a758';
 let goods = [];
 let filteredGoods = [];
 let currentDisplayedGoods = 6;
+let cart = [];
 
 function getCategoriesFromGoods(goods) {
     const categoriesWithSubCategories = goods.reduce((prev, current) => {
@@ -27,7 +28,7 @@ export function renderGoods(goods) {
         const discountPercentage = good.discount_price
             ? Math.round(((good.actual_price - good.discount_price) / good.actual_price) * 100)
             : null;
-
+        goodDiv.setAttribute('data-id', good.id);
         goodDiv.innerHTML = `
             <img src="${good.image_url}" alt="${good.name}" class="good-img">
             <div class="good-content">
@@ -57,6 +58,24 @@ export function renderGoods(goods) {
     } else {
         loadMoreButton.style.display = 'block';
     }
+
+    const addButtons = categoryContainer.querySelectorAll('.add-button')
+    addButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            // const orderLink = document.querySelector('.order-total-action');
+            const button = event.target;
+            const goodElement = button.parentElement.parentElement;
+            const goodId = Number(goodElement.dataset.id)
+            const good = goods.find(value => value.id === goodId);
+            const goodInCart = cart.find(cartGood => cartGood.id === goodId);
+            if (!goodInCart) {
+                cart.push(good);
+            }
+            button.classList.add('button-active');
+            goodElement.classList.add('goods-active');
+            localStorage.setItem('cart', JSON.stringify(cart));
+        });
+    });
 }
 
 function updateStars() {
@@ -92,7 +111,7 @@ function applySorting() {
     } else if (sortOption === 'rating-desc') {
         filteredGoods.sort((a, b) => b.rating - a.rating);
     }
-    
+
 }
 
 document.querySelector('#sort-select').addEventListener('change', () => {
@@ -118,7 +137,6 @@ function applyFiltersAndSort() {
 
     const discountOnly = document.getElementById('discount-only').checked;
 
-    // Сохраняем активные фильтры
     activeFilters = {
         selectedCategories,
         minPrice,
@@ -126,21 +144,22 @@ function applyFiltersAndSort() {
         discountOnly,
     };
 
-    // Применяем фильтры
     filteredGoods = goods.filter((good) => {
         const inCategory =
             selectedCategories.length === 0 || selectedCategories.includes(good.main_category);
+
+        const priceToFilter = good.discount_price || good.actual_price;
+
         const inPriceRange =
-            good.actual_price >= minPrice && good.actual_price <= maxPrice;
+            priceToFilter >= minPrice && priceToFilter <= maxPrice;
+
         const hasDiscount = !discountOnly || good.discount_price;
 
         return inCategory && inPriceRange && hasDiscount;
     });
 
-    // Применяем сортировку
     applySorting();
 
-    // Сбрасываем количество отображаемых товаров
     currentDisplayedGoods = Math.min(filteredGoods.length, 6);
     renderGoods(filteredGoods);
 }
@@ -199,98 +218,4 @@ function populateSidebarCategories(goods) {
     });
 }
 
-
-
 loadThings();
-
-
-let cart = {}; 
-
-function addToCart(good) {
-    const goodId = good.id;
-     
-    addButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const orderLink = document.querySelector('.order-total-action');
-            const button = event.target;
-            const goodElement = button.parentElement.parentElement;
-            const goodKeyword = goodElement.dataset.good
-
-            const good = sortedgoodes.find(value => value.keyword === goodKeyword);
-            order[good.category] = good;    
-            button.classList.add('button-active');
-            goodElement.classList.add('goodes-active');
-            const storedItems = Object.values(order).map(value => value.keyword);
-
-            localStorage.setItem('order', JSON.stringify(storedItems));
-        });
-    });
-    saveCartToLocalStorage();
-    updateCartPage();
-}
-
-
-function saveCartToLocalStorage() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function loadCartFromLocalStorage() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-    }
-}
-
-
-function totalSummary(cart) {
-    let totalSum = 0;
-    const goods = Object.values(order)
-    goods.forEach(function (good) {
-        if (good !== null) {
-            totalSum += good.price;
-        }
-    });
-    return totalSum
-}
-
-
-function updateCartPage() {
-    const cartContainer = document.querySelector('.cart-items');
-    const totalContainer = document.querySelector('.cart-total');
-    cartContainer.innerHTML = '';
-
-    if (Object.keys(cart).length === 0) {
-        cartContainer.innerHTML = '<p>Корзина пуста. Перейдите в каталог, чтобы добавить товары.</p>';
-    } else {
-        Object.values(cart).forEach((item) => {
-            const itemDiv = document.createElement('div');
-            itemDiv.classList.add('cart-item');
-            itemDiv.innerHTML = `
-                <div class="cart-item-info">
-                    <p>${item.name}</p>
-                    <p>${item.quantity} x ${item.discount_price || item.actual_price}₽</p>
-                </div>
-                <button class="remove-item" data-id="${item.id}">Удалить</button>
-            `;
-            cartContainer.appendChild(itemDiv);
-        });
-
-            document.querySelectorAll('.remove-item').forEach((button) => {
-            button.addEventListener('click', (event) => {
-                const id = event.target.dataset.id;
-                delete cart[id];
-                saveCartToLocalStorage();
-                updateCartPage();
-            });
-        });
-    }
-
-
-    totalContainer.textContent = `Общая стоимость: ${totalSummary(cart)}₽`;
-}
-
-
-loadCartFromLocalStorage();
-updateCartPage();
-
-export { addToCart };
