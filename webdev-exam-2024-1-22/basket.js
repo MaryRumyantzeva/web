@@ -14,6 +14,10 @@ function showModal(message) {
     modalText.textContent = message;
     modal.classList.remove("hidden");
 }
+document.getElementById("modal-ok").addEventListener("click", () => {
+    const modal = document.getElementById("modal");
+    modal.classList.add("hidden");
+});
 
 
 export function renderGoods(goods) {
@@ -57,7 +61,7 @@ export function renderGoods(goods) {
         });
     });
 
-    
+
 }
 
 function updateCartPage() {
@@ -74,8 +78,8 @@ function updateCartPage() {
             const goodDiv = document.createElement('div');
             goodDiv.classList.add('good');
             const discountPercentage = item.discount_price
-            ? Math.round(((item.actual_price - item.discount_price) / item.actual_price) * 100)
-            : null;
+                ? Math.round(((item.actual_price - item.discount_price) / item.actual_price) * 100)
+                : null;
             itemDiv.innerHTML = `
                 <div class="cart-item-info">
                 <img src="${item.image_url}" alt="${item.name}" class="good-img">
@@ -88,11 +92,12 @@ function updateCartPage() {
                     <p class="good-price">
                     ${item.discount_price ? `<span class="striked-price">${item.actual_price}₽</span>` : `${item.actual_price}₽`}
                     ${item.discount_price
-                ? `<span class="discount-percentage" style="color: red;">-${discountPercentage}%</span>` : ''}
+                    ? `<span class="discount-percentage" style="color: red;">-${discountPercentage}%</span>` : ''}
                 </p>
                     ${item.discount_price ? `<p class="discount-price">${item.discount_price}₽</p>` : ''}
-                </div>
+                
                 <button class="remove-item" data-id="${item.id}">Удалить</button>
+                </div>
                 </div>
             `;
             cartContainer.appendChild(itemDiv);
@@ -112,7 +117,7 @@ function updateCartPage() {
             document.querySelectorAll('.rating-stars').forEach(starContainer => {
                 const rating = parseFloat(starContainer.dataset.rating);
                 starContainer.innerHTML = '';
-        
+
                 for (let i = 1; i <= 5; i++) {
                     const star = document.createElement('i');
                     if (i <= Math.floor(rating)) {
@@ -128,6 +133,17 @@ function updateCartPage() {
         }
         updateStars();
     }
+
+    const form = document.forms[0];
+    form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const modal = document.getElementById("modal");
+    modal.classList.remove("hidden");
+
+    showModal("Заказ успешно оформлен");
+    return;
+
+})
 }
 
 const dateInput = document.querySelector('#date');
@@ -144,9 +160,9 @@ function updateDeliveryPrice() {
     const year = date.slice(0, date.indexOf('-'));
     const month = date.slice(year.length + 1, year.length + 3);
     const day = date.slice(year.length + month.length + 2);
-    
+
     const dateObj = new Date(year, month - 1, day);
-    const isTodayAWorkingDay = dateObj.getDay() < 6;
+    const isTodayAWorkingDay = dateObj.getDay() >= 1 && dateObj.getDay() < 6;
     const isPastSix = Number(timeOfTheDay.slice(0, timeOfTheDay.indexOf('-'))) >= 18;
 
     const areInputsComplete = (year && month && day && timeOfTheDay) || false;
@@ -173,6 +189,8 @@ dateInput.addEventListener('change', (event) => {
 timeOfTheDayInput.addEventListener('change', (event) => {
     updateDeliveryPrice()
 })
+
+
 
 updateCartPage();
 updateDeliveryPrice();

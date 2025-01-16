@@ -41,6 +41,8 @@ footer {
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
+    align-items: center;
+    width: 100%;
 }
   
 nav ul {
@@ -49,12 +51,6 @@ nav ul {
     list-style: none;
 }
   
-.toppannel {
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    display: flex;
-}
 
 form {
     width: 100%;
@@ -151,6 +147,7 @@ input[type="email"] {
     justify-content: center;
     align-items: center;
     background-color: rgb(232, 255, 201);
+    border: 1px solid black;
 }
 
 .modal.hidden {
@@ -158,20 +155,21 @@ input[type="email"] {
 }
 
 .modal-content {
-    background-color: white;
-    padding: 20px;
-    border: 2px solid black;
-    text-align: center;
-    width: 300px;
+    padding: 5px;    
+    text-align: center;   
+}
+
+#modal-text{
+    margin: 2px;
 }
 
 .modal-button {
     background-color: white;
     border: 1px solid black;
     border-radius: 10px;
-    padding: 10px 20px;
+    padding: 10px 5px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 5px;
     font-size: 16px;
 }
 
